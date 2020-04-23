@@ -1,3 +1,7 @@
+# Importnat!
+
+This a fork from the nanoscroller project that is not longer maintained
+
 # This project is not maintained
 
 This project is not currently actively maintained. If you need an up-to-date scrollbar plugin, try OverlayScrollbars instead:
