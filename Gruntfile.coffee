@@ -26,6 +26,15 @@ module.exports = (grunt) ->
 
     uglify:
       options:
+        banner:  '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+                 '(c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+                 ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n'
+      build:
+        src: '<%= dirs.jsDir %>/<%= pkg.name %>.js'
+        dest: '<%= dirs.jsDir %>/<%= pkg.name %>.min.js'
+    
+    uglifyDev:
+      options:
         sourceMapIn: '<%= dirs.jsDir %>/<%= pkg.name %>.js.map'
         sourceMap: '<%= dirs.jsDir %>/<%= pkg.name %>.min.js.map'
         sourceMappingURL: '<%= pkg.name %>.min.js.map'
@@ -42,6 +51,17 @@ module.exports = (grunt) ->
           ['<%= dirs.jsDir %>/<%= pkg.name %>.js', '<%= dirs.jsDir %>/<%= pkg.name %>.min.js']
 
     coffee:
+      nano:
+        options:
+          bare: true
+          sourceMap: false
+        files:
+          '<%= dirs.jsDir %>/<%= pkg.name %>.js': ['<%= dirs.coffeeDir %>/*.coffee']
+      tests:
+        files:
+          '<%= dirs.testDir %>/spec/nano-spec.js': ['<%= dirs.testDir %>/coffeescripts/*.coffee']
+          
+    coffeeDev:
       nano:
         options:
           bare: true
@@ -101,7 +121,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-csslint'
   grunt.loadNpmTasks 'grunt-contrib-connect'
 
-  grunt.registerTask 'default', ['coffee:nano', 'concat', 'uglify','csslint',  'sizediff', 'shell:marked']
+  grunt.registerTask 'default', ['coffee:nano', 'concat', 'uglify','csslint',  'sizediff']
+  grunt.registerTask 'default-dev', ['coffee:nano', 'concat', 'uglify','csslint',  'sizediff']
   grunt.registerTask 'build', ['default']
   grunt.registerTask 'build:docs', ['yuidoc']
   grunt.registerTask 'build:tests', ['coffee:tests']
